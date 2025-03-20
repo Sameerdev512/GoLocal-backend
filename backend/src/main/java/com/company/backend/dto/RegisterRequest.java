@@ -7,49 +7,44 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.company.backend.entity.Role.USER;
+
 @Getter
 @Setter
 public class RegisterRequest {
-    private String username;
-
+    //passing email in username to make authenticate the user from email
     @NotBlank(message="email should not be blank")
     @Email(message="email should be in format")
-    private String email;
+    private String username;
 
-    @Size(min=8,message="password should be minimum of 8 characters")
+
+//    @Size(min=8,message="password should be minimum of 8 characters")
+//    @NotBlank(message="password should not be blank")
     private String password;
 
     private Role role;
 
-    public String getUsername() {
-        return username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Role getRole() {
+        return role;
     }
 }
