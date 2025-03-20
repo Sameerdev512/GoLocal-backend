@@ -5,10 +5,15 @@ import com.company.backend.dto.AuthRequest;
 import com.company.backend.dto.RegisterRequest;
 import com.company.backend.entity.User;
 import com.company.backend.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthService {
@@ -26,26 +31,43 @@ public class AuthService {
     }
 
     public String register(RegisterRequest request) {
+
+
+        if(userRepository.findByUsername(request.getUsername()).isPresent())
+        {
+            return "User Already Exists with Email!";
+        }
+
         User user = User.builder()
                 .username(request.getUsername())
-                .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
         userRepository.save(user);
+
+        //passing registration success message to frontend
         return "User registered successfully!";
     }
 
-    public String authenticate(AuthRequest request) {
+    public ResponseEntity<Map<String,String>> authenticate(AuthRequest request) {
         try {
+            //authenticating the user
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
             System.out.println("Authentication done");
+
+
         }catch(Exception e)
         {
             System.out.println(e.getMessage());
+
+            //Passing Bad Credentials message
+            Map<String,String> response = new HashMap<>();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+
+        //fetching user fromDB
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return jwtUtil.generateToken(user);

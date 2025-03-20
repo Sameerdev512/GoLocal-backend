@@ -1,13 +1,17 @@
 package com.company.backend.config;
 
 import com.company.backend.entity.User;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Component
@@ -30,7 +34,7 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String generateToken(User user) {
+    public ResponseEntity<Map<String,String>> generateToken(User user) {
         System.out.println("Generating token for: " + user.getUsername());
         String token = Jwts.builder()
                 .setSubject(user.getUsername())
@@ -40,7 +44,12 @@ public class JwtUtil {
                 .compact();
         System.out.println("Generated Token: " + token);
 
-        return token;
+        //Passing role and token of user to frontend in response of login
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        response.put("role", String.valueOf(user.getRole()));
+
+        return ResponseEntity.ok(response);
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

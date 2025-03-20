@@ -22,14 +22,21 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-
-    private String email;
+    private String username; //in springBoot username will store email
 
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // Getters and Setters
+    @Getter
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Shop shop;  // This establishes the link between User and Shop
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
