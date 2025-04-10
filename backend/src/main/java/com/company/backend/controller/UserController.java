@@ -12,6 +12,6 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<String> getUserProfile() {
         System.out.println("🚀 User profile endpoint hit!");
-        return ResponseEntity.ok("User profile data retrieved successfully!");
+        return ResponseEntity.ok("User profile data");
     }
 }

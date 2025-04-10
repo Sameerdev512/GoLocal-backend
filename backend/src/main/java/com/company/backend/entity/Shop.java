@@ -3,6 +3,8 @@ package com.company.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +26,12 @@ public class Shop {
     private String city;
     private String contact;
     private String shopCategory;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     private boolean isApproved = false;
+
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user; // Each user can register only one shop
