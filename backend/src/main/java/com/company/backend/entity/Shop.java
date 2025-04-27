@@ -1,5 +1,6 @@
 package com.company.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,11 @@ public class Shop {
     private String city;
     private String contact;
     private String shopCategory;
+    private String openingTime;
+    private String closingTime;
+    private String email;
+    private String description;
+    private String gstin;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -33,6 +39,7 @@ public class Shop {
     private boolean isApproved = false;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user; // Each user can register only one shop
 

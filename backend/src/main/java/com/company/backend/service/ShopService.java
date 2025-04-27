@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShopService {
@@ -56,8 +59,11 @@ public class ShopService {
                 .contact(shopRequest.getContact())
                 .shopCategory(shopRequest.getShopCategory())
                 .isApproved(false)
+                .description(shopRequest.getDescription())
+                .gstin(shopRequest.getGstin())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .email(user.getUsername())
                 .user(user)
                 .build();
 
@@ -71,5 +77,44 @@ public class ShopService {
         System.out.println(user.getUpdatedAt());
 
         return ResponseEntity.ok("Shop registered successfully");
+    }
+
+    public Shop getShopDetails() {
+        //get logged in user
+        // Get the currently logged-in user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // Retrieves email of logged-in user
+
+        User user = userRepository.findByUsername(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return shopRepository.findByUserId(user.getId());
+    }
+
+    public ResponseEntity<Map<String, String>> updateShopDetails(ShopRequest shopRequest,Long id) {
+        Shop shop = shopRepository.findShopById(id);
+
+        shop.setOpeningTime(shopRequest.getOpeningTime());
+        shop.setClosingTime(shopRequest.getClosingTime());
+        shop.setContact(shop.getContact());
+        shop.setAddress(shopRequest.getAddress());
+        shop.setCountry(shopRequest.getCountry());
+        shop.setDescription(shopRequest.getDescription());
+        shop.setCity(shopRequest.getCity());
+
+        shopRepository.save(shop);
+
+        Map<String,String> response = new HashMap<>();
+        response.put("message","Shop details updated successfully");
+
+        return ResponseEntity.ok(response);
+    }
+
+    public List<Shop> getAllShops() {
+        return shopRepository.findAll();
+    }
+
+    public Shop getShopDetailsById(Long id) {
+        return shopRepository.findShopById(id);
     }
 }

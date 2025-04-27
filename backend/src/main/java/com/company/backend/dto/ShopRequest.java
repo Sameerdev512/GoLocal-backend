@@ -23,4 +23,10 @@ public class ShopRequest {
     private String contact;
     @NotBlank(message="shop category should not blank.")
     private String shopCategory;
+    private String description;
+    private String gstin;
+
+    private String openingTime;
+    private String closingTime;
+
 }

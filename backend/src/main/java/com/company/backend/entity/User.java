@@ -1,5 +1,6 @@
 package com.company.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,11 +37,12 @@ public class User implements UserDetails {
 
     // Getters and Setters
     @Getter
+    @JsonManagedReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Shop shop;  // This establishes the link between User and Shop
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> products;  // A seller can have multiple shops
+//    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Product> products;  // A seller can have multiple shops
 
     public void setShop(Shop shop) {
         this.shop = shop;
