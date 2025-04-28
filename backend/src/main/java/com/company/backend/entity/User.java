@@ -1,13 +1,16 @@
 package com.company.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -29,10 +32,17 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     // Getters and Setters
     @Getter
+    @JsonManagedReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Shop shop;  // This establishes the link between User and Shop
+
+//    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Product> products;  // A seller can have multiple shops
 
     public void setShop(Shop shop) {
         this.shop = shop;
