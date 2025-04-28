@@ -39,4 +39,11 @@ public class UserController {
         System.out.println(id);
         return productService.getShopProductsByShopId(id);
     }
+
+    @GetMapping("/getProductDetails/{id}")
+    public Product getShopProductsDetailsById(@PathVariable Long id)
+    {
+        System.out.println(id);
+        return productService.getShopProductsDetailsById(id);
+    }
 }

@@ -128,4 +128,8 @@ public class ProductService {
         System.out.println(id);
         return productRepository.findAllByShopId(id);
     }
+
+    public Product getShopProductsDetailsById(Long id) {
+        return productRepository.findProductById(id);
+    }
 }
