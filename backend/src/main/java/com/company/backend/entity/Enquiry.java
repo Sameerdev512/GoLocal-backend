@@ -9,6 +9,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,6 +28,7 @@ public class Enquiry {
     private String productId;
     private String response;
     private String status;
+    private Long shopId;
     private LocalDateTime createdAt;
     private LocalDateTime respondedAt;
 

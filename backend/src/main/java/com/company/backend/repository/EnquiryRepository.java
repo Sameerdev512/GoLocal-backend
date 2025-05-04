@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface EnquiryRepository extends JpaRepository<Enquiry,Long> {
     List<Enquiry> findAllByUserId(Long id);
+
+    List<Enquiry> findAllByShopId(Long id);
+
+    Enquiry getEnquiryById(Long enquiryId);
 }

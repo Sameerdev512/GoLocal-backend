@@ -1,6 +1,7 @@
 package com.company.backend.service;
 
 import com.company.backend.dto.ShopRequest;
+import com.company.backend.entity.Enquiry;
 import com.company.backend.entity.Role;
 import com.company.backend.entity.Shop;
 import com.company.backend.entity.User;
@@ -124,4 +125,6 @@ public class ShopService {
     public Shop getShopDetailsById(Long id) {
         return shopRepository.findShopById(id);
     }
+
+
 }

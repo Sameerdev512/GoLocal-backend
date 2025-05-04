@@ -20,6 +20,7 @@ public class EnquiryDto {
     private String productId;
     private String response;
     private String status;
+    private Long shopId;
     private LocalDateTime createdAt;
     private LocalDateTime respondedAt;
 }
