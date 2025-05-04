@@ -3,9 +3,11 @@ package com.company.backend.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 //when registering for shop user will become seller
 @Getter
+@Setter
 public class ShopRequest {
     @NotBlank(message="shop name should not blank.")
     private String shopName;
@@ -25,6 +27,7 @@ public class ShopRequest {
     private String shopCategory;
     private String description;
     private String gstin;
+    private MultipartFile imageUrl;
 
     private String openingTime;
     private String closingTime;

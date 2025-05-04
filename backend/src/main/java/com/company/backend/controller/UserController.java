@@ -1,17 +1,17 @@
 package com.company.backend.controller;
 
+import com.company.backend.entity.Enquiry;
 import com.company.backend.entity.Product;
 import com.company.backend.entity.Shop;
+import com.company.backend.service.EnquiryService;
 import com.company.backend.service.ProductService;
 import com.company.backend.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,6 +20,7 @@ public class UserController {
 
     private final ShopService shopService;
     private final ProductService productService;
+    private final EnquiryService enquiryService;
 
     @GetMapping("/profile")
     public ResponseEntity<String> getUserProfile() {
@@ -45,5 +46,17 @@ public class UserController {
     {
         System.out.println(id);
         return productService.getShopProductsDetailsById(id);
+    }
+
+    @PostMapping("/submit-enquiry")
+    public ResponseEntity<Map<String,String>> addEnquiry(@RequestBody Enquiry enquiry)
+    {
+        return enquiryService.submitEnquiry(enquiry);
+    }
+
+    @GetMapping("/get-users-enquiries")
+    public List<Enquiry> getUsersEnquiries()
+    {
+        return enquiryService.getUsersEnquiries();
     }
 }

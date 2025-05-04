@@ -32,6 +32,7 @@ public class Shop {
     private String email;
     private String description;
     private String gstin;
+    private String imageUrl;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

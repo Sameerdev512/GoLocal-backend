@@ -6,6 +6,8 @@ import com.company.backend.entity.Shop;
 import com.company.backend.entity.User;
 import com.company.backend.repository.ShopRepository;
 import com.company.backend.repository.UserRepository;
+import com.company.backend.util.CloudinaryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.ResponseEntity;
@@ -15,24 +17,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class ShopService {
     final ShopRepository shopRepository;
     final UserRepository userRepository;
+    final CloudinaryService cloudinaryService;
 
-    public ShopService(ShopRepository shopRepository,UserRepository userRepository)
-    {
-        this.shopRepository= shopRepository;
-        this.userRepository= userRepository;
-    }
+//    public ShopService(ShopRepository shopRepository,UserRepository userRepository)
+//    {
+//        this.shopRepository= shopRepository;
+//        this.userRepository= userRepository;
+//    }
 
-    public ResponseEntity<String> registerShop(@RequestBody ShopRequest shopRequest)
-    {
+    public ResponseEntity<String> registerShop(@RequestBody ShopRequest shopRequest) throws IOException {
         // Get the currently logged-in user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // Retrieves email of logged-in user
@@ -49,6 +53,8 @@ public class ShopService {
         {
             return ResponseEntity.ok("Shop already exists with same name");
         }
+
+        String imageFile = cloudinaryService.uploadFile(shopRequest.getImageUrl()); // Upload to Cloudinary
         Shop shop = Shop.builder()
                 .shopName(shopRequest.getShopName())
                 .ownerName(shopRequest.getOwnerName())
@@ -61,6 +67,7 @@ public class ShopService {
                 .isApproved(false)
                 .description(shopRequest.getDescription())
                 .gstin(shopRequest.getGstin())
+                .imageUrl(imageFile)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .email(user.getUsername())
