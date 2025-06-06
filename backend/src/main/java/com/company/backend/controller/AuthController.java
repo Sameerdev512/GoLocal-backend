@@ -20,6 +20,12 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @GetMapping("/hello")
+    public String sayHello()
+    {
+        return "welcome from GoLocal";
+    }
+
     @PostMapping("/register")
     public String register(@Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
