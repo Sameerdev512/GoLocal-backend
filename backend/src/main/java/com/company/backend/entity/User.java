@@ -48,6 +48,10 @@ public class User implements UserDetails {
         this.shop = shop;
     }
 
+
+    public Role getRole() {
+        return role;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));

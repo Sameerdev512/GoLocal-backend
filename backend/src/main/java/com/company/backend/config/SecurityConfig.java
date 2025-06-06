@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // ✅ CORS handled here
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+                        .requestMatchers("/auth/register", "/auth/login","/auth/*").permitAll()
                         .requestMatchers("/api/user/getAllShops").permitAll()
                         .requestMatchers("/api/admin/dashboard").hasRole("ADMIN")
                         .requestMatchers("/api/seller/**").hasRole("SELLER")
